@@ -19,7 +19,7 @@
       <div class="content">
         <nav id="proposition-menu">
           {% for nav in site.navigation %}
-          <a href="{{ nav.href }}" id="proposition-name"
+          <a href="{{ nav.href | relative_url }}" id="proposition-name"
               class="{% if page.menu == nav.label %}selected {% endif %}site-header-nav-item"
               target="{{ nav.target | default: _self }}"
               title="{{ nav.label }}">

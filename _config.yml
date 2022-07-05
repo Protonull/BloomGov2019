@@ -1,8 +1,8 @@
 title: Republic of Bloom
 email: protonull@protonmail.com
 description: "They work for you."
-baseurl: ""
-url: "https://republicofbloom.cc"
+baseurl: "/BloomGov"
+url: "https://protonull.github.io"
 
 markdown: kramdown
 highlighter: rouge
