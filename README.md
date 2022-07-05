@@ -1,0 +1,3 @@
+# Government of Bloom
+
+This project was inspired by the https://www.theyworkforyou.com/ website. Bloom has always used a Google Sheet ([link](https://docs.google.com/spreadsheets/d/1_szCVy7AAIh-GcE3zWMuOFra0i6Ut4F_XrEPevV7Gi8/edit)) to document Acts of Parliament, their respective votes, the Cabinet makeup, etc. While it was immensively impressive, it could be unwieldy and laggy to navigate and update, so this project was intended as an easier means to document the goings on of the Bloomean government. [Forestry](https://forestry.io/) was used as a CMS to add and modify entries. The git-history of this project is lost to time, I've re-uploaded it for sentimental reasons.
