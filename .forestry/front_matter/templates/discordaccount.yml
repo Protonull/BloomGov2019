@@ -1,0 +1,17 @@
+---
+label: DiscordAccount
+hide_body: false
+is_partial: true
+display_field: name
+fields:
+- type: text
+  name: name
+  label: Account
+  description: 'Their Discord account name and discriminator, e.g: Example#1234'
+  config:
+    required: true
+- type: text
+  name: uuid
+  label: UUID
+  description: 'Their Discord account ID, which you can find if you follow the instructions
+    here: https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID'

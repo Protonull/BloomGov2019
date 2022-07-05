@@ -1,0 +1,39 @@
+---
+label: Parliament Term
+hide_body: false
+is_partial: false
+fields:
+- type: text
+  label: Title
+  name: title
+  description: 'The nice name of a term, e.g: 11th Term, Era of Wealth'
+  default: Parliamentary Term
+- type: datetime
+  hidden: false
+  config:
+    date_format: YYYY-MM-DD
+    time_format: HH:mm
+    required: true
+    display_utc: true
+  label: Date
+  name: date
+- type: blocks
+  name: parties
+  label: Parties in Parliament
+  description: The parties represented in Parliament
+  template_types:
+  - partyinparliament
+- type: text
+  name: primeminister
+  label: Prime Minister
+  description: Who is the Prime Minister for this term?
+  config:
+    required: false
+- type: text
+  name: president
+  label: President
+  description: Who is the President for this term?
+pages:
+- _parliamentterms/9.md
+- _parliamentterms/8.md
+- _parliamentterms/12.md

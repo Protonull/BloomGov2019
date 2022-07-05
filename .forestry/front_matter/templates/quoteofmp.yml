@@ -1,0 +1,21 @@
+---
+label: QuoteOfMP
+hide_body: false
+is_partial: true
+display_field: name
+fields:
+- type: text
+  name: name
+  label: Name
+  description: The name of the Member of Parliament
+  config:
+    required: true
+- type: textarea
+  name: quote
+  label: Quote
+  description: What they said
+  config:
+    required: true
+    wysiwyg: false
+    schema:
+      format: markdown

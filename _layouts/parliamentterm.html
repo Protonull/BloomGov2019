@@ -1,0 +1,203 @@
+---
+layout: default
+---
+
+{% assign termid = page.url | split: "/" | last %}
+
+{% assign numbertoordinal = termid | plus: 0 %}
+{% include ordinalsuffix.html %}
+
+{% include lawcolours.html %}
+
+<style>
+  {% for party in page.parties %}
+    .{{ party.slug }} {
+      background-color: #{{ party.bgcolour }};
+      color: #{{ party.textcolour }};
+    }
+  {% endfor %}
+  .govuk-main-wrapper {
+    padding-top: 0px;
+  }
+  .govuk-heading-xl {
+    margin-bottom: 20px;
+  }
+  .voteid {
+    width: 12%;
+    max-width: 12%;
+  }
+  .votestatus {
+    text-align: right;
+  }
+  .party {
+    padding: 10px;
+  }
+  .centre {
+    text-align: center;
+  }
+  .top {
+    vertical-align: top;
+  }
+</style>
+
+<div class="govuk-width-container">
+
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="../">Government</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="./">Terms</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item" aria-current="page">{{ termid | append: ordinalresult }} Term</li>
+    </ol>
+  </div>
+
+  <main id="content" role="main" class="govuk-main-wrapper">
+
+    {% assign parties = page.parties | sort: "members | size" %}
+
+    {% if parties.size > 0 %}
+      <hr/>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <h1 class="govuk-heading-xl">Members of Parliament</h1>
+        </div>
+      </div>
+
+      {% assign p_offset = 0 %}
+      {% assign p_modulo = parties.size | modulo: 4 %}
+      {% assign p_divide = parties.size | divided_by: 4 %}
+      {% unless p_modulo == 0 %}
+        {% assign p_divide = p_divide | plus: 1 %}
+      {% endunless %}
+
+      {% for i in (1..p_divide) %}
+      <div class="govuk-grid-row">
+        {% assign p_remain = parties.size | minus: p_offset %}
+        {% for party in parties offset:p_offset limit:4 %}
+          {% if p_offset >= parties.size %}
+            {% break %}
+          {% endif %}
+          <div class="govuk-grid-column-one-quarter">
+            <centre>{{ party.name }}</centre>
+            <div class="party {{ party.slug }}">
+              {% for member in party.members %}
+                {{ member }}<br/>
+              {% endfor %}
+              {% if party.members.size > 0 and party.exmembers.size > 0 %}
+                <br/>
+              {% endif %}
+              {% for member in party.exmembers %}
+                <s>{{ member }}</s><br/>
+              {% endfor %}
+            </div>
+          </div>
+          {% assign p_offset = p_offset | plus: 1 %}
+        {% endfor %}
+      </div>
+      {% endfor %}
+    {% endif %}
+
+    {% assign contentlen = content | strip_newlines | remove: " " | size | default: 0 %}
+
+    {% if contentlen > 0 %}
+    <hr/>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        {{ content }}
+      </div>
+    </div>
+    {% endif %}
+
+    {% assign votes = site.parliamentvotes | where: "term", termid | sort: "date" | reverse %}
+
+    {% if votes.size > 0 %}
+    <hr/>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl">Parliamentary Legislation</h1>
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header voteid" scope="col">Reference</th>
+              <th class="govuk-table__header" scope="col">Proponent</th>
+              <th class="govuk-table__header" scope="col">Title</th>
+              <th class="govuk-table__header votestatus" scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            {% for vote in votes %}
+
+              {% assign voteid = vote.id | split: "/" | last | upcase %}
+              {% assign votename = vote.title | strip_html | normalize_whitespace | escape | default: voteid %}
+              {% assign votestatus = vote.status | default: "Unknown" %}
+
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell voteid">
+                  <a href="../legislation/{{ voteid | downcase }}">{{ voteid }}</a>
+                </td>
+                <td class="govuk-table__cell">
+                  {% if vote.proposer and vote.proposer != "" %}
+                    {% if vote.proxy and vote.proxy != "" %}
+                      <span title="{{ vote.proxy }} proposed this on behalf of {{ vote.proposer }}.">{{ vote.proxy }}*</span>
+                    {% else %}
+                      {{ vote.proposer }}
+                    {% endif %}
+                  {% else %}
+                    Unknown
+                  {% endif %}
+                </td>
+                <td class="govuk-table__cell">
+                  <a href="../legislation/{{ voteid | downcase }}">{{ votename }}</a>
+                </td>
+                <td class="govuk-table__cell votestatus">
+                  {% case votestatus %}
+                    {% when "current" %}
+                    <strong class="govuk-tag current">
+                      Current
+                    </strong>
+                    {% when "spent" %}
+                    <strong class="govuk-tag spent">
+                      Spent
+                    </strong>
+                    {% when "in effect" %}
+                    <strong class="govuk-tag spent">
+                      <span title="Could also be considered current.">Spent+</span>
+                    </strong>
+                    {% when "amended" %}
+                    <strong class="govuk-tag amended">
+                      Amended
+                    </strong>
+                    {% when "obsolete" %}
+                    <strong class="govuk-tag obsolete">
+                      Obsolete
+                    </strong>
+                    {% when "repealed" %}
+                    <strong class="govuk-tag repealed">
+                      Repealed
+                    </strong>
+                    {% when "rejected" %}
+                    <strong class="govuk-tag rejected">
+                      Rejected
+                    </strong>
+                    {% when "vote in progress" %}
+                    <strong class="govuk-tag voteinprogress">
+                      In Progress
+                    </strong>
+                    {% else %}
+                    <strong class="govuk-tag unknown">
+                      Unknown
+                    </strong>
+                  {% endcase %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+  </main>
+</div>

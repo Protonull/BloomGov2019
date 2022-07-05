@@ -1,0 +1,10 @@
+---
+---
+
+$baseurl: "{{ site.baseurl }}";
+
+@import "govuk-jekyll";
+
+body {
+  min-height: 100vh;
+}

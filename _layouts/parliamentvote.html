@@ -1,0 +1,199 @@
+---
+layout: default
+---
+
+{% assign voteid = page.id | split: "/" | last | upcase %}
+{% assign votename = page.title | strip_html | normalize_whitespace | escape | default: voteid %}
+{% assign votestatus = page.status | default: "NA" %}
+{% assign voteproponent = "NA" %}{% if page.proposer and page.proposer != "" %}{% assign voteproponent = page.proposer %}{% endif %}
+{% assign voteproxy = "NA" %}{% if page.proxy and page.proxy != "" %}{% assign voteproxy = page.proxy %}{% endif %}
+{% assign voteamendment = page.amendment | default: "unknown" %}
+
+{% include lawcolours.html %}
+
+<style>
+  .govuk-heading-xl {
+    margin-bottom: 20px;
+  }
+  .votes {
+    margin-top: 40px;
+  }
+  .centre {
+    text-align: center;
+  }
+  .top {
+    vertical-align: top;
+  }
+  .hideme, *.hideme * {
+    height: 0;
+    max-height: 0;
+    margin: 0;
+    visibility: hidden;
+    font-size: 0%;
+    content: none;
+  }
+</style>
+
+<div class="govuk-width-container">
+
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="../">Government</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="./">Legislation</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item" aria-current="page">{{ voteid }} - {{ votename }}</li>
+    </ol>
+  </div>
+
+  <div class="govuk-panel govuk-panel--confirmation">
+    <h1 class="govuk-panel__title">
+      {{ votename }}
+    </h1>
+    <div class="govuk-panel__body">
+      Proposed {% if voteproponent != "NA" %}by 
+        {% if voteproxy != "NA" %}
+          {{ voteproxy }} on behalf of {{ voteproponent }}
+        {% else %}
+          {{ voteproponent }}
+        {% endif %}
+      {% endif %}
+      {% if page.date %} on 
+        {% assign numbertoordinal = page.date | date: "%e" %}
+        {% include ordinalsuffix.html %}
+        {{ page.date | date: "%b" }} {{ numbertoordinal | append: ordinalresult }}, {{ page.date | date: "%Y" }}
+      {% endif %}
+    </div>
+  </div>
+
+  <main id="content" role="main" class="govuk-main-wrapper">
+
+    <div style="float:right;">
+      {% case votestatus %}
+        {% when "current" %}
+        <strong class="govuk-tag current">
+          Current Law
+        </strong>
+        {% when "spent" %}
+        <strong class="govuk-tag spent">
+          Spent
+        </strong>
+        {% when "in effect" %}
+        <strong class="govuk-tag spent">
+          <span title="Could also be considered current.">Spent+</span>
+        </strong>
+        {% when "amended" %}
+        <a href="./{{ voteamendment | downcase }}">
+          <strong class="govuk-tag amended">
+            Amended Law
+          </strong>
+        </a>
+        {% when "obsolete" %}
+        <strong class="govuk-tag obsolete">
+          Obsolete
+        </strong>
+        {% when "repealed" %}
+        <strong class="govuk-tag repealed">
+          Repealed
+        </strong>
+        {% when "rejected" %}
+        <strong class="govuk-tag rejected">
+          Rejected at Vote
+        </strong>
+        {% when "vote in progress" %}
+        <strong class="govuk-tag voteinprogress">
+          Vote in Progress
+        </strong>
+        {% else %}
+        <strong class="govuk-tag unknown">
+          Unknown
+        </strong>
+      {% endcase %}
+    </div>
+
+    {% assign infolen = content | strip_newlines | remove: " " | size | default: 0 %}
+
+    {% if infolen > 0 %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third">
+        <h1 class="govuk-heading-xl">Description</h1>
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        {{ content }}
+      </div>
+    </div>
+    {% else %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third">
+        Description data unavailable
+      </div>
+    </div>
+    {% endif %}
+  
+    {% assign yaylen = page.yay | size | default: 0 %}
+    {% assign naylen = page.nay | size | default: 0 %}
+    {% assign abslen = page.abs | size | default: 0 %}
+    {% assign dnvlen = page.dnv | size | default: 0 %}
+
+    {% unless votestatus == "vote in progress" %}
+      {% unless yaylen == 0 and naylen == 0 and abslen == 0 and dnvlen == 0 %}
+        <table class="govuk-table votes">
+          <caption class="govuk-table__caption centre">{{ yaylen }} Yays - {{ naylen }} Nays - {{ abslen }} Abstentions - {{ dnvlen }} Absenses</caption>
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header centre" scope="col" title="Those who voted in favour of the bill">Yays</th>
+              <th class="govuk-table__header centre" scope="col" title="Those who voted against the bill">Nays</th>
+              <th class="govuk-table__header centre" scope="col" title="Those who were present for the vote but didn't vote">Abstentions</th>
+              <th class="govuk-table__header centre" scope="col" title="Those who were not present for the vote">Absenses</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell centre top">
+                {% if yaylen == 0 %}
+                  No Yay Votes
+                {% else %}
+                  {% for vote in page.yay %}
+                    {{ vote }}<br/>
+                  {% endfor %}
+                {% endif %}
+              </td>
+              <td class="govuk-table__cell centre top">
+                {% if naylen == 0 %}
+                  No Nay Votes
+                {% else %}
+                  {% for vote in page.nay %}
+                    {{ vote }}<br/>
+                  {% endfor %}
+                {% endif %}
+              </td>
+              <td class="govuk-table__cell centre top">
+                {% if abslen == 0 %}
+                  No Abstentions
+                {% else %}
+                  {% for vote in page.abs %}
+                    {{ vote }}<br/>
+                  {% endfor %}
+                {% endif %}
+              </td>
+              <td class="govuk-table__cell centre top">
+                {% if dnvlen == 0 %}
+                  No Absenses
+                {% else %}
+                  {% for vote in page.dnv %}
+                    {{ vote }}<br/>
+                  {% endfor %}
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      {% endunless %}
+    {% endunless %}
+
+  </main>
+</div>

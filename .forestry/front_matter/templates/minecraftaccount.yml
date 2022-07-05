@@ -1,0 +1,19 @@
+---
+label: MinecraftAccount
+hide_body: false
+is_partial: true
+display_field: name
+fields:
+- type: text
+  label: Name
+  name: name
+  description: The ingame Minecraft name, which may not necessarily reflect their
+    Minecraft name on their Mojang account.
+  config:
+    required: true
+- type: text
+  name: uuid
+  label: UUID
+  description: The UUID of their Minecraft account.
+  config:
+    required: true

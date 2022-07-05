@@ -1,0 +1,50 @@
+---
+label: Mineman
+hide_body: false
+is_partial: false
+fields:
+- type: blocks
+  name: accounts
+  label: Accounts
+  description: Their accounts, both Minecraft and Discord
+  template_types:
+  - minecraftaccount
+  - discordaccount
+- type: list
+  label: Status
+  name: status
+  description: Their legal status
+  config:
+    use_select: true
+    source:
+      type: simple
+    options:
+    - citizen
+    - blacklisted
+    - foreigner
+    - resident
+    - national
+    - pearled
+    - pearl on sight
+    - unknown
+- type: tag_list
+  label: Roles
+  name: roles
+  description: Their meme titles, essentially.
+- type: list
+  label: Notes
+  name: notes
+  description: Additional notes about the player. (These will not appear on the website,
+    BUT ARE NOT PRIVATE!! Anyone looking at the source on Github will see these notes!)
+pages:
+- _minemen/orinnari.md
+- _minemen/aleh56.md
+- _minemen/mikeyythiss.md
+- _minemen/d34thb0y.md
+- _minemen/2withyoda.md
+- _minemen/erutara.md
+- _minemen/thirdoffive.md
+- _minemen/locke.md
+- _minemen/slushhi.md
+- _minemen/boombox59.md
+- _minemen/shadiestmule51.md

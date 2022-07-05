@@ -1,0 +1,137 @@
+---
+layout: default
+permalink: /government/legislation/
+---
+
+{% include lawcolours.html %}
+
+<style>
+  .govuk-main-wrapper {
+    padding-top: 10px;
+  }
+  .govuk-table__caption {
+    font-size: 200%;
+  }
+  .govuk-table__caption_long {
+    margin-bottom: 10px;
+  }
+  .hideme, *.hideme * {
+    height: 0;
+    max-height: 0;
+    margin: 0;
+    visibility: hidden;
+    font-size: 0%;
+    content: none;
+  }
+  .voteproposer {
+    width: 12%;
+    max-width: 12%;
+  }
+  .votestatus {
+    text-align: right;
+  }
+</style>
+
+<div class="govuk-width-container">
+
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="../">Government</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item" aria-current="page">
+        Legislation
+      </li>
+    </ol>
+  </div>
+
+  <main id="content" role="main" class="govuk-main-wrapper">
+
+    {% assign votesbyterm = site.parliamentvotes | group_by: "term" | sort: "name | plus: 0" | reverse %}
+
+    {% for term in votesbyterm %}
+      {% assign termitemslen = term.items | size | default: 0 %}
+      {% if termitemslen > 0 %}
+        <table class="govuk-table">
+            <caption class="govuk-table__caption{% unless forloop.first %} govuk-table__caption_long{% endunless %}">
+              <a href="../terms/{{ term.name }}">Term {{ term.name }}</a>
+            </caption>
+            <thead class="{% if forloop.first %}govuk-table__head{% else %}hideme{% endif %}">
+              <tr class="{% if forloop.first %}govuk-table__row{% else %}hideme{% endif %}">
+                <th class="{% if forloop.first %}govuk-table__header{% else %}hideme{% endif %} voteproposer" scope="col">Proponent</th>
+                <th class="{% if forloop.first %}govuk-table__header{% else %}hideme{% endif %}" scope="col">Title</th>
+                <th class="{% if forloop.first %}govuk-table__header{% else %}hideme{% endif %} votestatus" scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+              {% assign votes = term.items | sort: "date" | reverse %}
+
+              {% for vote in votes %}
+
+                {% assign voteid = vote.id | split: "/" | last | upcase %}
+                {% assign votename = vote.title | strip_html | normalize_whitespace | escape | default: voteid %}
+                {% assign votestatus = vote.status | default: "Unknown" %}
+
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell voteproposer">
+                    {% if vote.proposer and vote.proposer != "" %}
+                      {% if vote.proxy and vote.proxy != "" %}
+                      <span title="{{ vote.proxy }} proposed this on behalf of {{ vote.proposer }}.">{{ vote.proxy }}*</span>
+                      {% else %}
+                        {{ vote.proposer }}
+                      {% endif %}
+                    {% else %}
+                      Unknown
+                    {% endif %}
+                  </td>
+                  <td class="govuk-table__cell">
+                    <a href="./{{ voteid | downcase }}">{{ votename }}</a>
+                  </td>
+                  <td class="govuk-table__cell votestatus">
+                    {% case votestatus %}
+                      {% when "current" %}
+                      <strong class="govuk-tag current">
+                        Current
+                      </strong>
+                      {% when "spent" %}
+                      <strong class="govuk-tag spent">
+                        Spent
+                      </strong>
+                      {% when "in effect" %}
+                      <strong class="govuk-tag spent">
+                        <span title="Could also be considered current.">Spent+</span>
+                      </strong>
+                      {% when "amended" %}
+                      <strong class="govuk-tag amended">
+                        Amended
+                      </strong>
+                      {% when "obsolete" %}
+                      <strong class="govuk-tag obsolete">
+                        Obsolete
+                      </strong>
+                      {% when "repealed" %}
+                      <strong class="govuk-tag repealed">
+                        Repealed
+                      </strong>
+                      {% when "rejected" %}
+                      <strong class="govuk-tag rejected">
+                        Rejected
+                      </strong>
+                      {% when "vote in progress" %}
+                      <strong class="govuk-tag voteinprogress">
+                        In Progress
+                      </strong>
+                      {% else %}
+                      <strong class="govuk-tag unknown">
+                        Unknown
+                      </strong>
+                    {% endcase %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      {% endif %}
+    {% endfor %}
+  </main>
+</div>

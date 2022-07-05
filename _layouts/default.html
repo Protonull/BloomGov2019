@@ -1,0 +1,47 @@
+---
+layout: compress
+---
+
+{% assign title = page.title | default: site.title %}
+{% assign canonical = page.url | replace:'index.html','' | absolute_url %}
+{% assign description = page.description | default: page.excerpt | default: site.description | strip_html | normalize_whitespace | escape %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" media="screen" href="{{ "/assets/styles/frontend.css" | relative_url }}"/>
+    <link rel="stylesheet" media="screen" href="{{ "/assets/styles/main.css" | relative_url }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ description }}">
+    {% if page.keywords %}
+      {% if page.keywords.first %}
+        {% assign keywords = page.keywords | join: ',' %}
+      {% else %}
+        {% assign keywords = page.keywords %}
+      {% endif %}
+      <meta name="keywords" content="{{ keywords }}">
+    {% endif %}
+    <link rel="canonical" href="{{ canonical }}">
+    <link rel="shortcut icon" href="{{ "/assets/images/favicon.ico" | relative_url }}" />
+    <script src="{{ "/assets/scripts/frontend.js" | relative_url }}"></script>
+  </head>
+
+  <body>
+
+    <div id="skiplink-container">
+      <div>
+        <a href="#content" class="skiplink">Skip to main content</a>
+      </div>
+    </div>
+
+    {% unless page.noheader == true %}
+      {% include header.html %}
+    {% endunless %}
+
+    {{ content }}
+
+    <script>window.GOVUKFrontend.initAll()</script>
+  </body>
+</html>

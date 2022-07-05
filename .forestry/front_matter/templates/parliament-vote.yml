@@ -1,0 +1,140 @@
+---
+label: Parliament Vote
+hide_body: false
+is_partial: false
+fields:
+- type: text
+  label: Title
+  name: title
+  description: The name this piece of legislation.
+  default: Parliamentary Vote Regarding Miscellaneous Law
+  hidden: false
+  config:
+    required: true
+- type: datetime
+  label: Date of petition
+  name: date
+  description: When did the proponent petition this?
+  config:
+    date_format: YYYY-MM-DD
+    display_utc: true
+    required: true
+    time_format: HH:mm
+- type: select
+  name: status
+  config:
+    source:
+      type: simple
+    options:
+    - unknown
+    - current
+    - spent
+    - amended
+    - obsolete
+    - repealed
+    - rejected
+    - vote in progress
+    - in effect
+    required: true
+  label: Status
+  description: 'What is its legal status? e.g: current, repealed...'
+  default: unknown
+- type: number
+  name: term
+  label: Term
+  description: The Parliamentary term this was petitioned.
+  default: '0'
+  config:
+    min: '0'
+    required: true
+- type: text
+  name: proposer
+  label: Proponent
+  description: The who who brought this forward?
+- type: text
+  name: proxy
+  label: Proxy
+  description: If the proponent is not a Member of Parliament, which MP proposed it
+    on their behalf?
+- type: text
+  name: amendment
+  label: Amendment
+  description: Only when the status is amended, put the id of the amendment legislation
+    here
+  default: unknown
+  config:
+    required: false
+- type: list
+  name: yay
+  label: Voted in favour
+  description: The Members of Parliament who voted in favour of this piece of legislation.
+  config:
+    use_select: false
+    source:
+      type: documents
+- type: list
+  name: nay
+  label: Voted Against
+  description: The Members of Parliament who voted against this piece of legislation.
+- type: list
+  name: abs
+  label: Abstentions
+  description: The Members of Parliament who abstained from voting on this piece of
+    legislation.
+- type: list
+  label: Absences
+  name: dnv
+  description: The Members of Parliament who were absent from the vote on this piece
+    of legislation.
+- type: blocks
+  name: quotes
+  label: Quotes
+  description: Any notable comments from Members of Parliament about this piece of
+    legislation.
+  template_types:
+  - quoteofmp
+pages:
+- _parliamentvotes/m068.md
+- _parliamentvotes/b078.md
+- _parliamentvotes/b056.md
+- _parliamentvotes/m066.md
+- _parliamentvotes/m069.md
+- _parliamentvotes/b053.md
+- _parliamentvotes/b050.md
+- _parliamentvotes/b052.md
+- _parliamentvotes/b046.md
+- _parliamentvotes/b048.md
+- _parliamentvotes/m061.md
+- _parliamentvotes/m060.md
+- _parliamentvotes/m058.md
+- _parliamentvotes/b049.md
+- _parliamentvotes/m064.md
+- _parliamentvotes/m063.md
+- _parliamentvotes/b047.md
+- _parliamentvotes/m057.md
+- _parliamentvotes/m065.md
+- _parliamentvotes/b045.md
+- _parliamentvotes/m062.md
+- _parliamentvotes/m059.md
+- _parliamentvotes/m076.md
+- _parliamentvotes/b077.md
+- _parliamentvotes/m077.md
+- _parliamentvotes/b079.md
+- _parliamentvotes/b081.md
+- _parliamentvotes/b080.md
+- _parliamentvotes/b070.md
+- _parliamentvotes/b071.md
+- _parliamentvotes/b068.md
+- _parliamentvotes/b067.md
+- _parliamentvotes/b066.md
+- _parliamentvotes/b069.md
+- _parliamentvotes/m073.md
+- _parliamentvotes/m074.md
+- _parliamentvotes/b072.md
+- _parliamentvotes/b010.md
+- _parliamentvotes/b073.md
+- _parliamentvotes/b051.md
+- _parliamentvotes/b075.md
+- _parliamentvotes/b076.md
+- _parliamentvotes/b074.md
+- _parliamentvotes/m075.md

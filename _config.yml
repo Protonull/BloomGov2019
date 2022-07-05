@@ -1,0 +1,69 @@
+title: Republic of Bloom
+email: protonull@protonmail.com
+description: "They work for you."
+baseurl: ""
+url: "https://republicofbloom.cc"
+
+markdown: kramdown
+highlighter: rouge
+excerpt_separator: "<!--more-->"
+quiet: true
+lsi: false
+source:      .
+destination: ./_site
+
+permalink: /:year-:month-:day/:title
+paginate: 10
+paginate_path: "page:num"
+
+plugins:
+  - jekyll-sitemap
+
+# Navigation
+navigation:
+  - href: https://discord.gg/26rKXeE
+    label: Discord
+    target: _blank
+  - href: /history/
+    label: History
+  - href: /government/
+    label: Government
+
+defaults:
+  - scope:
+      path: ""
+      type: "parliamentterms"
+    values:
+      title: Parliamentary Term \#
+      layout: parliamentterm
+      parties: []
+      elections: []
+  - scope:
+      path: ""
+      type: "parliamentvotes"
+    values:
+      title: Parliamentary Vote Regarding Miscellaneous Law
+      layout: parliamentvote
+      status: unknown
+      amendment: unknown
+      yay: []
+      nay: []
+      abs: []
+      dnv: []
+      term: 0
+  - scope:
+      path: ""
+      type: "minemen"
+    values:
+      name: unknown
+      status: unknown
+
+collections:
+  parliamentterms:
+    output: true
+    permalink: /government/terms/:title
+  parliamentvotes:
+    output: true
+    permalink: /government/legislation/:title
+  minemen:
+    output: false

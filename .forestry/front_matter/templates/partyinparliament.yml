@@ -1,0 +1,40 @@
+---
+label: PartyInParliament
+hide_body: false
+is_partial: true
+display_field: name
+fields:
+- type: text
+  name: name
+  label: Party Name
+  description: The full name of the party.
+  config:
+    required: true
+- type: text
+  name: slug
+  label: Slug
+  description: 'The shortened, url friendly version of the party name, e.g: fdp'
+  config:
+    required: true
+- type: text
+  name: bgcolour
+  label: Background Colour
+  config:
+    required: true
+  description: The background colour in hex
+  default: F2F2F2
+- type: text
+  name: textcolour
+  label: Text colour
+  description: The text colour in hex
+  config:
+    required: true
+  default: '080808'
+- type: list
+  name: members
+  label: Members in Parliament
+  description: The party members who are currently in Parliament.
+- type: list
+  name: exmembers
+  label: Previous Members in Parliament
+  description: Those who were Members of Parliament during this term.

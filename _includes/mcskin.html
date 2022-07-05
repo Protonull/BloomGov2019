@@ -1,0 +1,16 @@
+{% if page.mcname %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/94/three.min.js" integrity="sha256-NGC9JEuTWN4GhTj091wctgjzftr+8WNDmw0H8J5YPYE=" crossorigin="anonymous"></script>
+<script src="https://minerender.org/dist/skin.min.js"></script>
+<script>
+  var skinRender = new SkinRender({
+    controls: {
+      zoom: false,
+      pan: false
+    }
+  },
+  document.getElementById("mcskincontainer"));
+  skinRender.render("{{ page.mcname }}");
+</script>
+<div id="mcskincontainer"></div>
+{% endif %}
